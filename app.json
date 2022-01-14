@@ -1,0 +1,22 @@
+{
+   "name": "sentry-t0-discord",
+   "env": {
+      "SENTRY_SECRET": {
+         "description": "SENTRY_SECRET.",
+         "generator": "secret"
+      },
+      "FLASK_APP": {
+         "description": "FLASK_APP.",
+         "value": "app.py"
+      },
+      "DISCORD_SENTRY_WEBHOOK": {
+         "description": "DISCORD_SENTRY_WEBHOOK.",
+         "value": "<discord_webhook_url_here>"
+      }
+   },
+   "buildpacks": [
+      {
+         "url": "heroku/python"
+      }
+   ]
+}

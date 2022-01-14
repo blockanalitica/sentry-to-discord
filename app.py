@@ -1,7 +1,7 @@
 import os
 
 from discord_webhook import DiscordEmbed, DiscordWebhook
-from flask import Flask, Response
+from flask import Flask, Response, request
 from flask_bootstrap import Bootstrap
 
 DISCORD_SENTRY_WEBHOOK = os.getenv("DISCORD_SENTRY_WEBHOOK")
@@ -54,9 +54,12 @@ def get_error_code_snippet(event):
     )
 
 
+import json
+
+
 def handle_event(data):
     webhook = DiscordWebhook(url=DISCORD_SENTRY_WEBHOOK)
-
+    data = json.loads(data)
     event = data["event"]
 
     snippet = get_error_code_snippet(event)
@@ -84,7 +87,7 @@ def handle_event(data):
 
 @app.route("/", methods=["POST"])
 def webhook():
-    if request.GET.get("secret") != SENTRY_SECRET:
+    if request.args.get("secret") != SENTRY_SECRET:
         return Response(None, status=401)
     handle_event(request.data)
     return Response(None, status=200)
